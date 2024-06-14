@@ -1,11 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package mahoraga.maps;
 
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -63,7 +63,7 @@ public class Controller {
             loginMessageLabel.setText("Login bem-sucedido!");
             Stage stage = (Stage) loginButton.getScene().getWindow();
             stage.close();
-            // mainApp.iniciarTelaPrincipal(new Stage());
+            iniciarTelaPrincipal();
         } else {
             usuario.diminuirTentativa();
             int tentativasRestantes = usuario.getTentativasRestantes();
@@ -75,6 +75,20 @@ public class Controller {
                 stage.close();
                 System.exit(0);
             }
+        }
+    }
+
+    private void iniciarTelaPrincipal() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
+            Parent root = fxmlLoader.load();
+            
+            Stage stage = new Stage();
+            stage.setTitle("Tela Principal");
+            stage.setScene(new Scene(root,1366,763));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
