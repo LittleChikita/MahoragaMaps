@@ -23,7 +23,7 @@
       <Insets />
    </opaqueInsets>
    <children>
-      <VBox layoutX="-1.0" layoutY="-9.0" prefHeight="731.0" prefWidth="307.0" style="-fx-background-color: #1351B4;" AnchorPane.bottomAnchor="-10.0" AnchorPane.topAnchor="-10.0">
+      <VBox layoutX="-1.0" layoutY="10.0" prefHeight="763.0" prefWidth="331.0" style="-fx-background-color: #1351B4;" AnchorPane.bottomAnchor="-10.0" AnchorPane.topAnchor="-10.0">
          <children>
             <Pane prefHeight="204.0" prefWidth="240.0">
                <children>
@@ -47,7 +47,7 @@
                   </Label>
                </children>
             </Pane>
-            <Button alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="313.0" style="-fx-background-color: #1351B4;" text="Listagem de Municípios" textFill="WHITE">
+            <Button fx:id="buttonListMunicipo" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="313.0" style="-fx-background-color: #1351B4;" text="Listagem de Municípios" textFill="WHITE">
                <padding>
                   <Insets left="50.0" />
                </padding>
@@ -55,7 +55,7 @@
                   <Font name="Verdana Bold" size="12.0" />
                </font>
             </Button>
-            <Button alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="313.0" style="-fx-background-color: #1351B4;" text="Atualizar Registros" textFill="WHITE">
+            <Button fx:id="buttonAtualizar" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#switchToUpdate" prefHeight="53.0" prefWidth="313.0" style="-fx-background-color: #1351B4;" text="Atualizar Registros" textFill="WHITE">
                <padding>
                   <Insets left="50.0" />
                </padding>
@@ -89,35 +89,39 @@
             </Button>
          </children>
       </VBox>
-      <Label layoutX="327.0" layoutY="211.0" text="Busca de Munícipio">
+      <Label layoutX="337.0" layoutY="186.0" text="Busca de Munícipio">
          <font>
             <Font name="Verdana Bold" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="municipioBusca" layoutX="467.0" layoutY="206.0" prefHeight="25.0" prefWidth="897.0" promptText="Pesquise usando: Código IBGE, Munícipio, Microrregião e Estado" />
-      <TableView fx:id="municipiosTableView" layoutX="325.0" layoutY="245.0" prefHeight="504.0" prefWidth="1327.0">
-        <columns>
-          <TableColumn fx:id="municipioCodigoTableColumn" prefWidth="81.0" text="Código IBGE" />
-          <TableColumn fx:id="municipioNameTableColumn" prefWidth="69.0" text="Munícipio" />
-            <TableColumn fx:id="municipioMicrorregiaoTableColumn" prefWidth="97.0" text="Microrregião" />
-            <TableColumn fx:id="municipioEstadoTableColumn" prefWidth="53.0" text="Estado" />
-            <TableColumn fx:id="municipioRegiaoTableColumn" prefWidth="75.0" text="Região" />
-            <TableColumn fx:id="municipioAreaTableColumn" prefWidth="75.0" text="Área Km²" />
-            <TableColumn fx:id="municipioPopulacaoTableColumn" prefWidth="75.0" text="População" />
-            <TableColumn fx:id="municipioDensidadeDemograficaTableColumn" prefWidth="157.0" text="Densidade Demográfica" />
-            <TableColumn fx:id="municipioDomiciliosTableColumn" minWidth="3.0" prefWidth="84.0" text="Domícilios" />
-            <TableColumn fx:id="municipioPibTotalTableColumn" prefWidth="175.0" text="PIB Total(R$ mil)" />
-            <TableColumn fx:id="municipioPibPerCapitaTableColumn" prefWidth="141.0" text="PIB per Capita Total" />
-            <TableColumn fx:id="municipioRendaMediaTableColumn" prefWidth="98.0" text="Renda Média" />
-            <TableColumn fx:id="municipioRendaNominalTableColumn" prefWidth="102.0" text="Renda Nominal" />
-            <TableColumn fx:id="municipioPEADiaTableColumn" minWidth="0.0" prefWidth="73.0" text="PEA Dia" />
-            <TableColumn fx:id="municipioIDHTableColumn" minWidth="0.0" prefWidth="40.0" text="IDH" />
-            <TableColumn fx:id="municipioClassificacaoIDHTableColumn" prefWidth="85.0" text="Classificação" />
-            <TableColumn fx:id="municipioIDHEducacaoTableColumn" minWidth="0.0" prefWidth="101.0" text="IDH Educação" />
-            <TableColumn fx:id="municipioClassificacaoIDHETableColumn" prefWidth="89.0" text="Classificação" />
-            <TableColumn fx:id="municipioIDHLongevidadeTableColumn" minWidth="0.0" prefWidth="110.0" text="IDH Longevidade" />
-            <TableColumn fx:id="municipioClassificacaoIDHLTableColumn" prefWidth="117.0" text="Classificação" />
-        </columns>
-      </TableView>
+      <TextField fx:id="municipioBusca" layoutX="484.0" layoutY="181.0" prefHeight="25.0" prefWidth="878.0" promptText="Pesquise usando: Código IBGE, Munícipio, Microrregião e Estado" AnchorPane.leftAnchor="464.0" AnchorPane.rightAnchor="14.0" />
+      <VBox layoutX="362.0" layoutY="251.0" prefHeight="513.0" prefWidth="971.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="352.0" AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="241.0">
+         <children>
+            <TableView fx:id="municipiosTableView" prefHeight="530.0" prefWidth="991.0">
+              <columns>
+                <TableColumn fx:id="municipioCodigoTableColumn" prefWidth="81.0" text="Código IBGE" />
+                <TableColumn fx:id="municipioNameTableColumn" prefWidth="69.0" text="Munícipio" />
+                  <TableColumn fx:id="municipioMicrorregiaoTableColumn" prefWidth="97.0" text="Microrregião" />
+                  <TableColumn fx:id="municipioEstadoTableColumn" prefWidth="53.0" text="Estado" />
+                  <TableColumn fx:id="municipioRegiaoTableColumn" prefWidth="75.0" text="Região" />
+                  <TableColumn fx:id="municipioAreaTableColumn" prefWidth="75.0" text="Área Km²" />
+                  <TableColumn fx:id="municipioPopulacaoTableColumn" prefWidth="75.0" text="População" />
+                  <TableColumn fx:id="municipioDensidadeDemograficaTableColumn" prefWidth="157.0" text="Densidade Demográfica" />
+                  <TableColumn fx:id="municipioDomiciliosTableColumn" minWidth="3.0" prefWidth="84.0" text="Domícilios" />
+                  <TableColumn fx:id="municipioPibTotalTableColumn" prefWidth="175.0" text="PIB Total(R$ mil)" />
+                  <TableColumn fx:id="municipioPibPerCapitaTableColumn" prefWidth="141.0" text="PIB per Capita Total" />
+                  <TableColumn fx:id="municipioRendaMediaTableColumn" prefWidth="98.0" text="Renda Média" />
+                  <TableColumn fx:id="municipioRendaNominalTableColumn" prefWidth="102.0" text="Renda Nominal" />
+                  <TableColumn fx:id="municipioPEADiaTableColumn" minWidth="0.0" prefWidth="73.0" text="PEA Dia" />
+                  <TableColumn fx:id="municipioIDHTableColumn" minWidth="0.0" prefWidth="40.0" text="IDH" />
+                  <TableColumn fx:id="municipioClassificacaoIDHTableColumn" prefWidth="85.0" text="Classificação" />
+                  <TableColumn fx:id="municipioIDHEducacaoTableColumn" minWidth="0.0" prefWidth="101.0" text="IDH Educação" />
+                  <TableColumn fx:id="municipioClassificacaoIDHETableColumn" prefWidth="89.0" text="Classificação" />
+                  <TableColumn fx:id="municipioIDHLongevidadeTableColumn" minWidth="0.0" prefWidth="110.0" text="IDH Longevidade" />
+                  <TableColumn fx:id="municipioClassificacaoIDHLTableColumn" prefWidth="117.0" text="Classificação" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

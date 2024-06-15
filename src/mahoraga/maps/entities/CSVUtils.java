@@ -13,7 +13,9 @@ import java.util.Locale;
 
 public class CSVUtils {
 
-    public static List<Municipio> lerCSV(String caminho) {
+    private static final String caminho = "C:\\Users\\Chê Chikita\\Desktop\\inCSV\\arquivo.csv";
+
+    public static List<Municipio> lerCSV() {
         List<Municipio> municipios = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminho, StandardCharsets.UTF_8))) {

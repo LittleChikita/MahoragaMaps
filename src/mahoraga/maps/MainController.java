@@ -1,10 +1,10 @@
 package mahoraga.maps;
 
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -14,8 +14,31 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import mahoraga.maps.entities.CSVUtils;
 import mahoraga.maps.entities.Municipio;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+
+
 public class MainController implements Initializable {
 
+    @FXML
+    private Button buttonAtualizar;
+
+    @FXML
+    private void switchToUpdate(ActionEvent event) throws IOException {
+        Parent telaUpdate = FXMLLoader.load(getClass().getResource("Atualizacao.fxml"));
+        Scene scene2 = new Scene(telaUpdate);
+        Stage janelaAtual = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        janelaAtual.setScene(scene2);
+        janelaAtual.show();
+    }
+ 
     @FXML
     private TableColumn<Municipio, String> municipioAreaTableColumn;
 
@@ -30,6 +53,7 @@ public class MainController implements Initializable {
 
     @FXML
     private TableColumn<Municipio, String> municipioEstadoTableColumn;
+
     @FXML
     private TableColumn<Municipio, String> municipioClassificacaoIDHETableColumn;
 
@@ -81,11 +105,11 @@ public class MainController implements Initializable {
     @FXML
     private TableView<Municipio> municipiosTableView;
 
-    ObservableList<Municipio> municipioObservableList = FXCollections.observableArrayList();
+    private ObservableList<Municipio> municipioObservableList = FXCollections.observableArrayList();
 
     @Override
-    public void initialize(URL url, ResourceBundle resource) {
-        List<Municipio> lista = CSVUtils.lerCSV("C:\\Users\\Chê Chikita\\Desktop\\inCSV\\arquivo.csv");
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        List<Municipio> lista = CSVUtils.lerCSV();
 
         municipioCodigoTableColumn.setCellValueFactory(new PropertyValueFactory<>("codigoIBGE"));
         municipioNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("nome"));
@@ -110,5 +134,37 @@ public class MainController implements Initializable {
 
         municipioObservableList.setAll(lista);
         municipiosTableView.setItems(municipioObservableList);
+
+        FilteredList<Municipio> filteredData = new FilteredList<>(municipioObservableList, b -> true);
+
+        municipioBusca.textProperty().addListener(((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(Municipio -> {
+                if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                if (Municipio.getCodigoIBGE().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true;
+                } else if (Municipio.getNome().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true;
+                } else if (Municipio.getMicroRegiao().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true;
+                } else if (Municipio.getEstado().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true;
+                } else if (Municipio.getRegiaoGeografica().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }));
+
+        SortedList<Municipio> sortedData = new SortedList<>(filteredData);
+
+        sortedData.comparatorProperty().bind(municipiosTableView.comparatorProperty());
+
+        municipiosTableView.setItems(sortedData);
     }
 }

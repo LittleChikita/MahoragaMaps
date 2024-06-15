@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mahoraga.maps.entities.Usuario;
 
 /**
@@ -85,6 +86,7 @@ public class Controller {
             
             Stage stage = new Stage();
             stage.setTitle("Tela Principal");
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root,1366,763));
             stage.show();
         } catch (IOException e) {
