@@ -1,11 +1,17 @@
 package mahoraga.maps;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -34,6 +40,7 @@ public class AtualizacaoController implements Initializable {
 
     private final String inCSVPath = "C:\\Users\\Chê Chikita\\Desktop\\inCSV";
     private final String outCSVPath = "C:\\Users\\Chê Chikita\\Desktop\\outCSV";
+    private final String changelogPath = "C:\\Users\\Chê Chikita\\Desktop\\changelog\\changelog.csv";
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -196,27 +203,55 @@ public class AtualizacaoController implements Initializable {
             alert.showAndWait();
             return;
         }
-        String populacao = txtPopulacao.getText();
-        String domicilios = txtDomicilios.getText();
-        String pibTotal = txtPibTotal.getText();
-        String idh = txtIdh.getText();
-        String rendaMedia = txtRendaMedia.getText();
-        String rendaNominal = txtRendaNominal.getText();
-        String peaDia = txtPeaDia.getText();
-        String idhEducacao = txtIdhEducacao.getText();
-        String idhLongevidade = txtIdhLongevidade.getText();
 
-        municipioSelecionado.setPopulacao(populacao);
-        municipioSelecionado.setDomicilios(domicilios);
-        municipioSelecionado.setPibTotal(pibTotal);
-        municipioSelecionado.setIdh(idh);
-        municipioSelecionado.setRendaMedia(rendaMedia);
-        municipioSelecionado.setRendaNominal(rendaNominal);
-        municipioSelecionado.setPeaDia(peaDia);
-        municipioSelecionado.setIdhEducacao(idhEducacao);
-        municipioSelecionado.setIdhLongevidade(idhLongevidade);
+        String oldPopulacao = municipioSelecionado.getPopulacao();
+        String oldDomicilios = municipioSelecionado.getDomicilios();
+        String oldPibTotal = municipioSelecionado.getPibTotal();
+        String oldIdh = municipioSelecionado.getIdh();
+        String oldRendaMedia = municipioSelecionado.getRendaMedia();
+        String oldRendaNominal = municipioSelecionado.getRendaNominal();
+        String oldPeaDia = municipioSelecionado.getPeaDia();
+        String oldIdhEducacao = municipioSelecionado.getIdhEducacao();
+        String oldIdhLongevidade = municipioSelecionado.getIdhLongevidade();
+
+        municipioSelecionado.setPopulacao(txtPopulacao.getText());
+        municipioSelecionado.setDomicilios(txtDomicilios.getText());
+        municipioSelecionado.setPibTotal(txtPibTotal.getText());
+        municipioSelecionado.setIdh(txtIdh.getText());
+        municipioSelecionado.setRendaMedia(txtRendaMedia.getText());
+        municipioSelecionado.setRendaNominal(txtRendaNominal.getText());
+        municipioSelecionado.setPeaDia(txtPeaDia.getText());
+        municipioSelecionado.setIdhEducacao(txtIdhEducacao.getText());
+        municipioSelecionado.setIdhLongevidade(txtIdhLongevidade.getText());
 
         CSVUtils.escreverCSV(new ArrayList<>(municipios), outCSVPath + "\\arquivo_saida.csv");
+        writeChangelogEntry("Populacao", oldPopulacao, txtPopulacao.getText());
+        writeChangelogEntry("Domicilios", oldDomicilios, txtDomicilios.getText());
+        writeChangelogEntry("PibTotal", oldPibTotal, txtPibTotal.getText());
+        writeChangelogEntry("Idh", oldIdh, txtIdh.getText());
+        writeChangelogEntry("RendaMedia", oldRendaMedia, txtRendaMedia.getText());
+        writeChangelogEntry("RendaNominal", oldRendaNominal, txtRendaNominal.getText());
+        writeChangelogEntry("PeaDia", oldPeaDia, txtPeaDia.getText());
+        writeChangelogEntry("IdhEducacao", oldIdhEducacao, txtIdhEducacao.getText());
+        writeChangelogEntry("IdhLongevidade", oldIdhLongevidade, txtIdhLongevidade.getText());
+    }
+
+    private void writeChangelogEntry(String campo, String valorAntigo, String valorNovo) {
+        if (Objects.equals(valorAntigo, valorNovo)) {
+            return;
+        }
+        LocalDateTime agora = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String dataHora = agora.format(formatter);
+        String municipio = municipioSelecionado.getNome();
+
+        try (FileWriter fw = new FileWriter(changelogPath, true); BufferedWriter bw = new BufferedWriter(fw); PrintWriter out = new PrintWriter(bw)) {
+
+            out.println(dataHora + ";" + municipio + ";" + campo + ";" + valorAntigo + ";" + valorNovo);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean isAnyFieldEmpty() {
@@ -247,7 +282,7 @@ public class AtualizacaoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadData();
-        CBMunicipios.getItems().addAll(municipios.stream().map(Municipio::getNome).collect(Collectors.toList()));
+        CBMunicipios.setItems(municipios.stream().map(Municipio::getNome).collect(Collectors.toCollection(FXCollections::observableArrayList)));
     }
 
     private void loadData() {

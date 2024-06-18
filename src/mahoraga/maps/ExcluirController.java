@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package mahoraga.maps;
 
 import java.io.File;
@@ -27,11 +23,6 @@ import javafx.stage.Stage;
 import mahoraga.maps.entities.CSVUtils;
 import mahoraga.maps.entities.Municipio;
 
-/**
- * FXML Controller class
- *
- * @author Josias Junior Santos  <josiajrsantos@gmail.com>
- */
 public class ExcluirController implements Initializable {
 
     private Municipio municipioSelecionado;
@@ -105,6 +96,7 @@ public class ExcluirController implements Initializable {
 
     @FXML
     void deletarRegistro(ActionEvent event) {
+
         municipioSelecionado.setPopulacao(null);
         municipioSelecionado.setDomicilios(null);
         municipioSelecionado.setPibTotal(null);
@@ -114,6 +106,7 @@ public class ExcluirController implements Initializable {
         municipioSelecionado.setPeaDia(null);
         municipioSelecionado.setIdhEducacao(null);
         municipioSelecionado.setIdhLongevidade(null);
+
         CSVUtils.escreverCSV(new ArrayList<>(municipios), outCSVPath + "\\arquivo_saida.csv");
 
     }

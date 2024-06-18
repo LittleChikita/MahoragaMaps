@@ -29,7 +29,7 @@
                <children>
                   <ImageView fitHeight="83.0" fitWidth="77.0" layoutX="21.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../Downloads/SimboloIbge.png" />
+                        <Image url="@SimboloIbge.png" />
                      </image>
                   </ImageView>
                   <Line endX="145.0" layoutX="153.0" layoutY="190.0" startX="-137.0" stroke="WHITE" strokeWidth="2.0">

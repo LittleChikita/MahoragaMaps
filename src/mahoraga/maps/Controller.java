@@ -13,11 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mahoraga.maps.entities.Usuario;
 
-/**
- * FXML Controller class
- *
- * @author Josias Junior Santos  <josiajrsantos@gmail.com>
- */
 public class Controller {
 
     private final Usuario usuario;

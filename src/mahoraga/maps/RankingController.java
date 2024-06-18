@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -88,6 +89,9 @@ public class RankingController implements Initializable {
         stage.close();
     }
 
+    @FXML
+    private BarChart<String, Number> top10PibPerCapitaBarChart;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

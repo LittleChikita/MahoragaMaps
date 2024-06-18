@@ -120,7 +120,6 @@ public class MainController implements Initializable {
         initTableColumns();
         loadData();
         setupSearchFilter();
-
     }
 
     private void initTableColumns() {
@@ -288,4 +287,7 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
     }
+    
+    
+    
 }
