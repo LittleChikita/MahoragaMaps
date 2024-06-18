@@ -23,11 +23,19 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.scene.control.Label;
 
 public class MainController implements Initializable {
+    
+    @FXML
+    private Label labelPiorPibPerCapita;
+
+    @FXML
+    private Label labelPibPerCapita;
 
     @FXML
     private Button buttonAtualizar;
@@ -120,6 +128,8 @@ public class MainController implements Initializable {
         initTableColumns();
         loadData();
         setupSearchFilter();
+        updateHighestPibPerCapita();
+        updateLowestPibPerCapita();
     }
 
     private void initTableColumns() {
@@ -258,7 +268,7 @@ public class MainController implements Initializable {
 
     @FXML
     void switchToChangelog(ActionEvent event) {
-         try {
+        try {
             Parent telaUpdate = FXMLLoader.load(getClass().getResource("Changelog.fxml"));
             Scene scene3 = new Scene(telaUpdate);
             Stage janelaAtual = (Stage) buttonChangelog.getScene().getWindow();
@@ -287,7 +297,48 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    // daki pra baixo só deus sabe
+    private void updateHighestPibPerCapita() {
+        if (!municipioObservableList.isEmpty()) {
+            Municipio highestPibPerCapitaMunicipio = municipioObservableList.stream()
+                    .max(Comparator.comparing(Municipio::getPibPerCapita))
+                    .orElse(null);
+
+            if (highestPibPerCapitaMunicipio != null) {
+                labelPibPerCapita.setText(String.format("%.2f", highestPibPerCapitaMunicipio.getPibPerCapita()));
+                labelMunicipio.setText(String.format("%s", highestPibPerCapitaMunicipio.getNome()));
+            }
+        }
+    }
     
+    private void updateLowestPibPerCapita() {
+        if (!municipioObservableList.isEmpty()) {
+            Municipio lowestPibPerCapitaMunicipio = municipioObservableList.stream()
+                    .min(Comparator.comparing(Municipio::getPibPerCapita))
+                    .orElse(null);
+
+            if (lowestPibPerCapitaMunicipio != null) {
+                labelPiorPibPerCapita.setText(String.format("%.2f", lowestPibPerCapitaMunicipio.getPibPerCapita()));
+                labelMunicipioPior.setText(String.format("%s", lowestPibPerCapitaMunicipio.getNome()));
+            }
+        }
+    }
+
+    @FXML
+    private void handleUpdatePibPerCapita(ActionEvent event) {
+        updateHighestPibPerCapita();
+    }
     
+    @FXML
+    private void updateLoestPibPerCapita(ActionEvent event) {
+        updateLowestPibPerCapita();
+    }
+
+    @FXML
+    private Label labelMunicipio;
+    
+    @FXML
+    private Label labelMunicipioPior;
     
 }

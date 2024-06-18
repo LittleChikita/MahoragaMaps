@@ -97,15 +97,15 @@
             </Button>
          </children>
       </VBox>
-      <Label layoutX="337.0" layoutY="186.0" text="Busca de Munícipio">
+      <Label layoutX="381.0" layoutY="225.0" prefHeight="53.0" prefWidth="136.0" text="Busca de Munícipio">
          <font>
             <Font name="Verdana Bold" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="municipioBusca" layoutX="484.0" layoutY="181.0" prefHeight="25.0" prefWidth="878.0" promptText="Pesquise usando: Código IBGE, Munícipio, Microrregião e Estado" AnchorPane.leftAnchor="464.0" AnchorPane.rightAnchor="14.0" />
-      <VBox layoutX="362.0" layoutY="251.0" prefHeight="513.0" prefWidth="971.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="352.0" AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="241.0">
+      <TextField fx:id="municipioBusca" layoutX="371.0" layoutY="265.0" prefHeight="25.0" prefWidth="983.0" promptText="Pesquise usando: Código IBGE, Munícipio, Microrregião e Estado" AnchorPane.leftAnchor="371.0" AnchorPane.rightAnchor="32.0" />
+      <VBox layoutX="370.0" layoutY="311.0" prefHeight="440.0" prefWidth="984.0" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="301.0">
          <children>
-            <TableView fx:id="municipiosTableView" prefHeight="530.0" prefWidth="991.0">
+            <TableView fx:id="municipiosTableView" prefHeight="493.0" prefWidth="976.0">
               <columns>
                 <TableColumn fx:id="municipioCodigoTableColumn" prefWidth="81.0" text="Código IBGE" />
                 <TableColumn fx:id="municipioNameTableColumn" prefWidth="69.0" text="Munícipio" />
@@ -131,5 +131,123 @@
             </TableView>
          </children>
       </VBox>
+      <Label layoutX="370.0" layoutY="21.0" text="Melhor Pib Per Capita">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelPibPerCapita" layoutX="370.0" layoutY="64.0" onDragDetected="#handleUpdatePibPerCapita" prefHeight="25.0" prefWidth="146.0" textFill="DARKGREEN">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelMunicipio" layoutX="370.0" layoutY="39.0" prefHeight="25.0" prefWidth="146.0">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="370.0" layoutY="131.0" text="Pior Pib Per Capita">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="597.0" layoutY="21.0" text="IDH">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="597.0" layoutY="131.0" text="IDH">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="706.0" layoutY="21.0" text="IDH Educação">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="874.0" layoutY="21.0" text="IDH Longevidade">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="706.0" layoutY="131.0" text="IDH Educação">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="874.0" layoutY="131.0" text="IDH Longevidade">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelPiorPibPerCapita" layoutX="370.0" layoutY="180.0" onDragDetected="#updateLoestPibPerCapita" prefHeight="25.0" prefWidth="146.0" textFill="DARKRED">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelMunicipioPior" layoutX="370.0" layoutY="155.0" prefHeight="25.0" prefWidth="146.0">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="538.0" layoutY="180.0" prefHeight="25.0" prefWidth="146.0" textFill="DARKGREEN">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="538.0" layoutY="155.0" prefHeight="25.0" prefWidth="146.0">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="538.0" layoutY="64.0" prefHeight="25.0" prefWidth="146.0" textFill="DARKGREEN">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="538.0" layoutY="39.0" prefHeight="25.0" prefWidth="146.0">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="706.0" layoutY="64.0" prefHeight="25.0" prefWidth="146.0" textFill="DARKGREEN">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="706.0" layoutY="39.0" prefHeight="25.0" prefWidth="146.0">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="706.0" layoutY="180.0" prefHeight="25.0" prefWidth="146.0" textFill="DARKGREEN">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="706.0" layoutY="155.0" prefHeight="25.0" prefWidth="146.0">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="874.0" layoutY="64.0" prefHeight="25.0" prefWidth="146.0" textFill="DARKGREEN">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="874.0" layoutY="39.0" prefHeight="25.0" prefWidth="146.0">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="874.0" layoutY="180.0" prefHeight="25.0" prefWidth="146.0" textFill="DARKGREEN">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="874.0" layoutY="155.0" prefHeight="25.0" prefWidth="146.0">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
