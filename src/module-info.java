@@ -4,6 +4,7 @@ module MahoragaMaps {
     requires javafx.graphics;
     requires java.base;
     
+    
     opens mahoraga.maps;
     opens mahoraga.maps.entities;
 }

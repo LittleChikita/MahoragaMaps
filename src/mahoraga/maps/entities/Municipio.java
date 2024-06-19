@@ -1,5 +1,13 @@
 package mahoraga.maps.entities;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class Municipio {
 
     private String codigoIBGE;
@@ -69,6 +77,7 @@ public class Municipio {
     public void setAreaKm(String areaKm) {
         this.areaKm = areaKm;
     }
+    
 
     public String getPopulacao() {
         return populacao;
@@ -137,6 +146,7 @@ public class Municipio {
     public String getIdhLongevidade() {
         return idhLongevidade;
     }
+    
 
     public void setIdhLongevidade(String idhLongevidade) {
         this.idhLongevidade = idhLongevidade;
@@ -150,31 +160,70 @@ public class Municipio {
         return dataUltimaAtualizacao;
     }
 
+    
     public static double converter(String valor) {
-        String valorSemFormato = valor.replace(".", "").replace(",", ".");
-        return Double.parseDouble(valorSemFormato);
+        if (valor == null || valor.isEmpty() || valor.equalsIgnoreCase("null")) {
+            return 0.0;
+        }
+        try {
+            String valorSemFormato = valor.replace(".", "").replace(",", ".");
+           double numero = Double.parseDouble(valorSemFormato);
+           NumberFormat formatoBR = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
+            formatoBR.setMinimumFractionDigits(2);
+            formatoBR.setMaximumFractionDigits(2);
+            String numeroFormatado = formatoBR.format(numero);
+            return formatoBR.parse(numeroFormatado).doubleValue();
+        } catch (NumberFormatException | ParseException e) {
+            System.err.println("Erro ao converter para Double: " + e.getMessage());
+            return 0.0;
+        }
     }
+    
 
-    public Double calcularDensidadeDemografica() {
-        if (populacao == null ) {
-            return null;
+    public double calcularDensidadeDemografica() {
+        if (populacao == null) {
+            return 0.0;
         } else {
-            try {
-                double populacaoNumerica = converter(populacao);
-                double areaNumerica = converter(areaKm);
+            double populacaoNumerica = converter(populacao);
+            double areaNumerica = converter(areaKm);
 
-                double densidadeDemografica = populacaoNumerica / areaNumerica;
+            double densidadeDemografica = populacaoNumerica / areaNumerica;
 
-                return densidadeDemografica;
-            } catch (NumberFormatException e) {
-                System.err.println("Erro ao converter valores numéricos.");
-                e.printStackTrace();
-                return null;
-            }
+            return densidadeDemografica;
         }
     }
 
-    public String getClassificacaoIDH() {
+    public String getDensidadeDemografica() {
+        if (getPibPerCapita() == 0.0) {
+            return null;
+        } else {
+            double densidadeDemografica = calcularDensidadeDemografica();
+            return converterParaString(densidadeDemografica);
+        }
+    }
+
+    public double getPibPerCapita() {
+        if (pibTotal == null) {
+            return 0.0;
+        } else {
+            double pibTotalNumerico = converter(pibTotal);
+            double populacaoNumerica = converter(populacao);
+
+            return (pibTotalNumerico * 1000) / populacaoNumerica;
+        }
+    }
+
+
+    public String getPIBPerCapitaTotal() {
+        if (getPibPerCapita() == 0.0) {
+            return null;
+        } else {
+            double pibPerCapitaTotal = getPibPerCapita();
+            return converterParaString(pibPerCapitaTotal);
+        }
+    }
+
+    public String classificarIDH() {
         if (idh == null) {
             return null;
         } else {
@@ -182,20 +231,32 @@ public class Municipio {
         }
     }
 
-    public String getClassificacaoIDHL() {
-        if (idhLongevidade == null) {
+    public String classificarIDHLongevidade() {
+        if (idh == null) {
             return null;
         } else {
             return classificarValor(converter(idhLongevidade));
         }
     }
 
-    public String getClassificacaoIDHE() {
-        if (idhEducacao == null) {
+    public String classificarIDHEducacao() {
+        if (idh == null) {
             return null;
         } else {
             return classificarValor(converter(idhEducacao));
         }
+    }
+
+    public String getClassificacaoIDH() {
+        return classificarIDH();
+    }
+
+    public String getClassificacaoIDHL() {
+        return classificarIDHLongevidade();
+    }
+
+    public String getClassificacaoIDHE() {
+        return classificarIDHEducacao();
     }
 
     private String classificarValor(double valor) {
@@ -210,23 +271,31 @@ public class Municipio {
         }
     }
 
-    public Double PibPerCapita() {
-        if (pibTotal == null) {
-            return null;
-        } else {
-            double pibTotalNumerico = converter(pibTotal);
-            double populacaoNumerica = converter(populacao);
-
-            return (pibTotalNumerico * 1000) / populacaoNumerica;
-        }
+    public String converterParaString(double valor) {
+        String valorString = String.format("%.2f", valor);
+        return valorString;
     }
 
-    public double getPibPerCapita() {
-        return PibPerCapita();
-    }
+    public static void limparMunicipio(Municipio municipioSelecionado) {
+        System.out.println("Iniciando a limpeza do município: " + municipioSelecionado.getNome());
 
-    public double getDensidadeDemografica() {
-        return calcularDensidadeDemografica();
-    }
+        municipioSelecionado.setPopulacao(null);
+        municipioSelecionado.setDomicilios(null);
+        municipioSelecionado.setPibTotal(null);
+        municipioSelecionado.setIdh(null);
+        municipioSelecionado.setRendaMedia(null);
+        municipioSelecionado.setRendaNominal(null);
+        municipioSelecionado.setPeaDia(null);
+        municipioSelecionado.setIdhEducacao(null);
+        municipioSelecionado.setIdhLongevidade(null);
 
+        LocalDateTime dataAtualizacao = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String dataFormatada = dataAtualizacao.format(formatter);
+        municipioSelecionado.setDataUltimaAtualizacao(dataFormatada);
+        // Apagando classificações do IDH
+        // Você pode adicionar mais lógicas aqui se houver mais propriedades relacionadas à classificação de IDH
+        System.out.println("Município limpo: " + municipioSelecionado.getNome());
+    }
+    
 }

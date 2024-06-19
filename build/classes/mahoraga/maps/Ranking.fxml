@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
@@ -91,13 +88,269 @@
             </Button>
          </children>
       </VBox>
-      <LineChart fx:id="pibPerCapitaBarChart" layoutX="389.0" layoutY="89.0">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </LineChart>
+      <Label layoutX="355.0" layoutY="31.0" text="Maior Área Km²">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="505.0" layoutY="31.0" text="Maior População">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="534.0" layoutY="115.0" text="Maior Número De Domicilios">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="925.0" layoutY="31.0" text="Maior Pib Total">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="1257.0" layoutY="31.0" text="Maior IDH">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="925.0" layoutY="115.0" text="Maior Renda Média">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="754.0" layoutY="115.0" text="Maior Renda Nominal">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="1094.0" layoutY="31.0" text="Maior PEA Dia">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="355.0" layoutY="115.0" text="Maior IDH Educação">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="1075.0" layoutY="115.0" text="Maior IDH Longevidade">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="671.0" layoutY="31.0" text="Maior Densidade Demografica">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelMaiorArea" layoutX="355.0" layoutY="46.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelMaiorPopulacao" layoutX="505.0" layoutY="46.0" prefHeight="15.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelMaiorDensidade" layoutX="706.0" layoutY="46.0" prefHeight="17.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelMaiorPibTotal" layoutX="920.0" layoutY="46.0" prefHeight="17.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelValorArea" layoutX="355.0" layoutY="67.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKGREEN">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelValorPopulacao" layoutX="505.0" layoutY="70.0" prefHeight="17.0" prefWidth="112.0" text="Label" textFill="DARKGREEN">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelValorDensidade" layoutX="706.0" layoutY="70.0" prefHeight="17.0" prefWidth="112.0" text="Label" textFill="DARKGREEN">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelValorPibTotal" layoutX="920.0" layoutY="70.0" prefHeight="17.0" prefWidth="112.0" text="Label" textFill="DARKGREEN">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelMaiorIdh" layoutX="1236.0" layoutY="50.0" prefHeight="17.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelValorIdh" layoutX="1236.0" layoutY="74.0" prefHeight="17.0" prefWidth="112.0" text="Label" textFill="DARKGREEN">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelMaiorIdhEducacao" layoutX="367.0" layoutY="137.0" prefHeight="17.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelValorIdhEducacao" layoutX="367.0" layoutY="161.0" prefHeight="17.0" prefWidth="112.0" text="Label" textFill="DARKGREEN">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelMaiorDomicilios" layoutX="574.0" layoutY="135.0" prefHeight="17.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelValorDomicilios" layoutX="574.0" layoutY="159.0" prefHeight="17.0" prefWidth="112.0" text="Label" textFill="DARKGREEN">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelMaiorRendaNominal" layoutX="771.0" layoutY="132.0" prefHeight="17.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelValorRendaNominal" layoutX="771.0" layoutY="156.0" prefHeight="17.0" prefWidth="112.0" text="Label" textFill="DARKGREEN">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelMaiorRendaMedia" layoutX="934.0" layoutY="132.0" prefHeight="17.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelValorRendaMedia" layoutX="934.0" layoutY="156.0" prefHeight="17.0" prefWidth="112.0" text="Label" textFill="DARKGREEN">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelMaiorIdhLongevidade" layoutX="1098.0" layoutY="134.0" prefHeight="17.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelValorIdhLongevidade" layoutX="1098.0" layoutY="158.0" prefHeight="17.0" prefWidth="112.0" text="Label" textFill="DARKGREEN">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelMaiorPeaDia" layoutX="1086.0" layoutY="54.0" prefHeight="17.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="labelValorPeaDia" layoutX="1086.0" layoutY="78.0" prefHeight="17.0" prefWidth="112.0" text="Label" textFill="DARKGREEN">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="367.0" layoutY="309.0" text="Menor Área Km²" />
+      <Label fx:id="labelMenorArea" layoutX="367.0" layoutY="326.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelValorMenorArea" layoutX="367.0" layoutY="347.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKRED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelMenorPopulacao" layoutX="505.0" layoutY="325.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelValorMenorPopulacao" layoutX="505.0" layoutY="346.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKRED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="505.0" layoutY="309.0" text="Menor População" />
+      <Label fx:id="labelMenorDensidade" layoutX="630.0" layoutY="324.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelValorMenorDensidade" layoutX="630.0" layoutY="345.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKRED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="630.0" layoutY="308.0" text="Menor Densidade Demografica" />
+      <Label fx:id="labelMenorIdh" layoutX="1133.0" layoutY="324.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelValorMenorIdh" layoutX="1133.0" layoutY="345.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKRED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="1133.0" layoutY="308.0" text="Menor IDH" />
+      <Label fx:id="labelMenorPibTotal" layoutX="883.0" layoutY="324.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelValorMenorPibTotal" layoutX="883.0" layoutY="345.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKRED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="883.0" layoutY="308.0" text="Menor Pib Total" />
+      <Label fx:id="labelMenorPeaDia" layoutX="998.0" layoutY="324.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelValorMenorPeaDia" layoutX="998.0" layoutY="345.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKRED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="998.0" layoutY="308.0" text="Menor PEA Dia" />
+      <Label fx:id="labelMenorIdhEducacao" layoutX="367.0" layoutY="434.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelValorMenorIdhEducacao" layoutX="367.0" layoutY="455.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKRED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="367.0" layoutY="418.0" text="Menor IDH Educação" />
+      <Label fx:id="labelMenorDomicilios" layoutX="534.0" layoutY="432.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelValorMenorDomicilios" layoutX="534.0" layoutY="453.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKRED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="534.0" layoutY="416.0" text="Menor Número De Domicilios" />
+      <Label fx:id="labelMenorRendaNominal" layoutX="762.0" layoutY="430.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelValorMenorRendaNominal" layoutX="762.0" layoutY="451.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKRED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="762.0" layoutY="414.0" text="Menor Renda Nominal" />
+      <Label fx:id="labelMenorRendaMedia" layoutX="942.0" layoutY="428.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelValorMenorRendaMedia" layoutX="942.0" layoutY="449.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKRED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="942.0" layoutY="412.0" text="Menor Renda Média" />
+      <Label fx:id="labelMenorIdhLongevidade" layoutX="1098.0" layoutY="430.0" prefHeight="23.0" prefWidth="112.0" text="Label">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelValorMenorIdhLongevidade" layoutX="1098.0" layoutY="451.0" prefHeight="23.0" prefWidth="112.0" text="Label" textFill="DARKRED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="1098.0" layoutY="414.0" text="Maior IDH Longevidade" />
    </children>
 </AnchorPane>

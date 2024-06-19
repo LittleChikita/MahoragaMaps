@@ -136,6 +136,8 @@ public class ChangelogController implements Initializable {
                 String[] values = line.split(";");
                 if (values.length == 5) {
                     logEntries.add(new LogEntry(values[0], values[1], values[2], values[3], values[4]));
+                } else if (values.length == 3 && values[2].equals("Dados excluídos")) {
+                    logEntries.add(new LogEntry(values[0], values[1], values[2]));
                 }
             }
         } catch (IOException e) {
@@ -159,6 +161,14 @@ public class ChangelogController implements Initializable {
             this.campo = campo;
             this.valorAntigo = valorAntigo;
             this.valorNovo = valorNovo;
+        }
+
+        public LogEntry(String dataHora, String municipio, String acao) {
+            this.dataHora = dataHora;
+            this.municipio = municipio;
+            this.campo = "Dados Excluídos";
+            this.valorAntigo = "";
+            this.valorNovo = acao;
         }
 
         public String getDataHora() {

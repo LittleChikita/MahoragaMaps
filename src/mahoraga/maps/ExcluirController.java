@@ -1,8 +1,13 @@
 package mahoraga.maps;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +21,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -30,6 +37,7 @@ public class ExcluirController implements Initializable {
 
     private final String inCSVPath = "C:\\Users\\Chê Chikita\\Desktop\\inCSV";
     private final String outCSVPath = "C:\\Users\\Chê Chikita\\Desktop\\outCSV";
+    private final String changelogPath = "C:\\Users\\Chê Chikita\\Desktop\\changelog\\changelog.csv";
 
     @FXML
     private ComboBox<String> CBMunicipios;
@@ -96,7 +104,20 @@ public class ExcluirController implements Initializable {
 
     @FXML
     void deletarRegistro(ActionEvent event) {
+        if (municipioSelecionado == null) {
+            // Exibir alerta caso nenhum município tenha sido selecionado
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Atenção");
+            alert.setHeaderText(null);
+            alert.setContentText("Por favor, selecione um município antes de tentar deletar.");
+            alert.showAndWait();
+            return;
+        }
 
+        // Salva o nome do município antes de deletar
+        String nomeMunicipio = municipioSelecionado.getNome();
+
+        // Continua com a deleção parcial se um município tiver sido selecionado
         municipioSelecionado.setPopulacao(null);
         municipioSelecionado.setDomicilios(null);
         municipioSelecionado.setPibTotal(null);
@@ -106,9 +127,33 @@ public class ExcluirController implements Initializable {
         municipioSelecionado.setPeaDia(null);
         municipioSelecionado.setIdhEducacao(null);
         municipioSelecionado.setIdhLongevidade(null);
+        
+
+        // Escreve no changelog que os dados foram excluídos
+        writeChangelogEntry("Dados excluídos");
 
         CSVUtils.escreverCSV(new ArrayList<>(municipios), outCSVPath + "\\arquivo_saida.csv");
 
+        Alert successAlert = new Alert(AlertType.INFORMATION);
+        successAlert.setTitle("Sucesso");
+        successAlert.setHeaderText(null);
+        successAlert.setContentText("As informações do município foram excluídas com sucesso!");
+        successAlert.showAndWait();
+    }
+
+    private void writeChangelogEntry(String acao) {
+        LocalDateTime agora = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String dataHora = agora.format(formatter);
+        String municipio = municipioSelecionado.getNome();
+
+        try (FileWriter fw = new FileWriter(changelogPath, true); BufferedWriter bw = new BufferedWriter(fw); PrintWriter out = new PrintWriter(bw)) {
+
+            out.println(dataHora + ";" + municipio + ";" + acao);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

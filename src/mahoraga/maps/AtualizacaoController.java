@@ -203,6 +203,7 @@ public class AtualizacaoController implements Initializable {
             alert.showAndWait();
             return;
         }
+      
 
         String oldPopulacao = municipioSelecionado.getPopulacao();
         String oldDomicilios = municipioSelecionado.getDomicilios();
@@ -234,6 +235,12 @@ public class AtualizacaoController implements Initializable {
         writeChangelogEntry("PeaDia", oldPeaDia, txtPeaDia.getText());
         writeChangelogEntry("IdhEducacao", oldIdhEducacao, txtIdhEducacao.getText());
         writeChangelogEntry("IdhLongevidade", oldIdhLongevidade, txtIdhLongevidade.getText());
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Sucesso");
+        alert.setHeaderText(null);
+        alert.setContentText("Os valores do município foram atualizados com sucesso!");
+        alert.showAndWait();
     }
 
     private void writeChangelogEntry(String campo, String valorAntigo, String valorNovo) {
@@ -267,7 +274,7 @@ public class AtualizacaoController implements Initializable {
     }
 
     private boolean containsSpecialCharacters() {
-        String regex = "^[a-zA-Z0-9,.]+$";
+        String regex = "^[0-9.,]+$";
         return !txtPopulacao.getText().matches(regex)
                 || !txtDomicilios.getText().matches(regex)
                 || !txtPibTotal.getText().matches(regex)
@@ -278,6 +285,7 @@ public class AtualizacaoController implements Initializable {
                 || !txtIdhEducacao.getText().matches(regex)
                 || !txtIdhLongevidade.getText().matches(regex);
     }
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

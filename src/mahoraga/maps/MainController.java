@@ -18,19 +18,26 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import mahoraga.maps.entities.CSVUtils;
 import mahoraga.maps.entities.Municipio;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
+import static mahoraga.maps.entities.Municipio.converter;
 
 public class MainController implements Initializable {
-    
+
     @FXML
     private Label labelPiorPibPerCapita;
 
@@ -59,7 +66,7 @@ public class MainController implements Initializable {
     private TableColumn<Municipio, String> municipioCodigoTableColumn;
 
     @FXML
-    private TableColumn<Municipio, String> municipioDomiciliosTableColumn;
+    private TableColumn<Municipio, Double> municipioDomiciliosTableColumn;
 
     @FXML
     private TableColumn<Municipio, String> municipioEstadoTableColumn;
@@ -89,13 +96,13 @@ public class MainController implements Initializable {
     private TableColumn<Municipio, String> municipioNameTableColumn;
 
     @FXML
-    private TableColumn<Municipio, String> municipioPEADiaTableColumn;
+    private TableColumn<Municipio, Double> municipioPEADiaTableColumn;
 
     @FXML
-    private TableColumn<Municipio, String> municipioPibTotalTableColumn;
+    private TableColumn<Municipio, Double> municipioPibTotalTableColumn;
 
     @FXML
-    private TableColumn<Municipio, String> municipioPopulacaoTableColumn;
+    private TableColumn<Municipio, Double> municipioPopulacaoTableColumn;
 
     @FXML
     private TableColumn<Municipio, String> municipioRegiaoTableColumn;
@@ -104,16 +111,16 @@ public class MainController implements Initializable {
     private TableColumn<Municipio, String> municipioRendaMediaTableColumn;
 
     @FXML
-    private TableColumn<Municipio, String> municipioDensidadeDemograficaTableColumn;
+    private TableColumn<Municipio, Double> municipioDensidadeDemograficaTableColumn;
 
     @FXML
-    private TableColumn<Municipio, String> municipioPibPerCapitaTableColumn;
+    private TableColumn<Municipio, Double> municipioPibPerCapitaTableColumn;
 
     @FXML
-    private TableColumn<Municipio, String> municipioRendaNominalTableColumn;
+    private TableColumn<Municipio, Double> municipioRendaNominalTableColumn;
 
     @FXML
-    private TableColumn<Municipio, String> municipioAreaTableColumn;
+    private TableColumn<Municipio, Double> municipioAreaTableColumn;
 
     @FXML
     private TextField municipioBusca;
@@ -130,29 +137,138 @@ public class MainController implements Initializable {
         setupSearchFilter();
         updateHighestPibPerCapita();
         updateLowestPibPerCapita();
+
+    }
+
+    //SoDeusSabe
+    private Locale localeBR = new Locale("pt", "BR");
+    private NumberFormat numeroBR = NumberFormat.getNumberInstance(localeBR);
+    private StringConverter<Number> converter = new NumberStringConverter(numeroBR);
+
+    private Callback<TableColumn<Municipio, Double>, TableCell<Municipio, Double>> criarCellFactory() {
+        return column -> new TableCell<Municipio, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || item == 0.0) {
+                    setText(null);
+                } else {
+                    setText(converter.toString(item));
+                }
+            }
+        };
+    }
+
+    private NumberFormat criarNumberFormat() {
+        NumberFormat numeroBR = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
+        numeroBR.setMinimumFractionDigits(2);
+        numeroBR.setMaximumFractionDigits(2);
+        return numeroBR;
+    }
+
+    private String formatarNumeroBR(double valor) {
+        Locale localeBR = new Locale("pt", "BR");
+        NumberFormat numeroBR = NumberFormat.getNumberInstance(localeBR);
+        numeroBR.setMinimumFractionDigits(2);
+        numeroBR.setMaximumFractionDigits(2);
+        return numeroBR.format(valor);
     }
 
     private void initTableColumns() {
+
         municipioCodigoTableColumn.setCellValueFactory(new PropertyValueFactory<>("codigoIBGE"));
         municipioNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("nome"));
         municipioMicrorregiaoTableColumn.setCellValueFactory(new PropertyValueFactory<>("microRegiao"));
         municipioEstadoTableColumn.setCellValueFactory(new PropertyValueFactory<>("estado"));
         municipioRegiaoTableColumn.setCellValueFactory(new PropertyValueFactory<>("regiaoGeografica"));
-        municipioAreaTableColumn.setCellValueFactory(new PropertyValueFactory<>("areaKm"));
-        municipioPopulacaoTableColumn.setCellValueFactory(new PropertyValueFactory<>("populacao"));
-        municipioDensidadeDemograficaTableColumn.setCellValueFactory(new PropertyValueFactory<>("densidadeDemografica"));
-        municipioDomiciliosTableColumn.setCellValueFactory(new PropertyValueFactory<>("domicilios"));
-        municipioPibTotalTableColumn.setCellValueFactory(new PropertyValueFactory<>("pibTotal"));
+        municipioAreaTableColumn.setCellValueFactory(cellData -> {
+            String areaString = cellData.getValue().getAreaKm();
+            double value = converter(areaString);
+            return value != 0.0 ? new SimpleDoubleProperty(value).asObject() : null;
+        });
+        municipioPopulacaoTableColumn.setCellValueFactory(cellData -> {
+            String populacaoString = cellData.getValue().getPopulacao();
+            double value = converter(populacaoString);
+            return value != 0.0 ? new SimpleDoubleProperty(value).asObject() : null;
+
+        });
+        municipioPopulacaoTableColumn.setCellFactory(criarCellFactory());
+        municipioDensidadeDemograficaTableColumn.setCellValueFactory(cellData -> {
+            String areaDensidade = cellData.getValue().getDensidadeDemografica();
+            double value = converter(areaDensidade);
+            return value != 0.0 ? new SimpleDoubleProperty(value).asObject() : null;
+        });
+        municipioDensidadeDemograficaTableColumn.setCellFactory(criarCellFactory());
+        municipioDomiciliosTableColumn.setCellValueFactory(cellData -> {
+            String areaDomicilios = cellData.getValue().getDomicilios();
+            double value = converter(areaDomicilios);
+            return value != 0.0 ? new SimpleDoubleProperty(value).asObject() : null;
+        });
+        municipioDomiciliosTableColumn.setCellFactory(criarCellFactory());
+        municipioPibTotalTableColumn.setCellValueFactory(cellData -> {
+            String areaPibTotal = cellData.getValue().getPibTotal();
+            double value = converter(areaPibTotal);
+            return value != 0.0 ? new SimpleDoubleProperty(value).asObject() : null;
+        });
+        municipioPibTotalTableColumn.setCellFactory(criarCellFactory());
         municipioPibPerCapitaTableColumn.setCellValueFactory(new PropertyValueFactory<>("PibPerCapita"));
-        municipioRendaMediaTableColumn.setCellValueFactory(new PropertyValueFactory<>("rendaMedia"));
-        municipioRendaNominalTableColumn.setCellValueFactory(new PropertyValueFactory<>("rendaNominal"));
-        municipioPEADiaTableColumn.setCellValueFactory(new PropertyValueFactory<>("peaDia"));
-        municipioIDHTableColumn.setCellValueFactory(new PropertyValueFactory<>("idh"));
+        municipioPibPerCapitaTableColumn.setCellFactory(criarCellFactory());
+        municipioRendaMediaTableColumn.setCellValueFactory(cellData -> {
+            String areaRendaMendia = cellData.getValue().getRendaMedia();
+            double value = converter(areaRendaMendia);
+            if (value != 0.0) {
+                String formattedValue = criarNumberFormat().format(value);
+                return new SimpleStringProperty(formattedValue);
+            } else {
+                return null;
+            }
+        });
+        municipioRendaNominalTableColumn.setCellValueFactory(cellData -> {
+            String areaRendaNominal = cellData.getValue().getRendaNominal();
+            double value = converter(areaRendaNominal);
+            return value != 0.0 ? new SimpleDoubleProperty(value).asObject() : null;
+        });
+        municipioRendaNominalTableColumn.setCellFactory(criarCellFactory());
+        municipioPEADiaTableColumn.setCellValueFactory(cellData -> {
+            String areaPeadia = cellData.getValue().getPeaDia();
+            double value = converter(areaPeadia);
+            return value != 0.0 ? new SimpleDoubleProperty(value).asObject() : null;
+        });
+        municipioPEADiaTableColumn.setCellFactory(criarCellFactory());
+        municipioIDHTableColumn.setCellValueFactory(cellData -> {
+            String areaidh = cellData.getValue().getIdh();
+            double value = converter(areaidh);
+            if (value != 0.0) {
+                String formattedValue = criarNumberFormat().format(value);
+                return new SimpleStringProperty(formattedValue);
+            } else {
+                return null;
+            }
+        });
         municipioClassificacaoIDHTableColumn.setCellValueFactory(new PropertyValueFactory<>("classificacaoIDH"));
-        municipioIDHEducacaoTableColumn.setCellValueFactory(new PropertyValueFactory<>("idhEducacao"));
+        municipioIDHEducacaoTableColumn.setCellValueFactory(cellData -> {
+            String areamidhE = cellData.getValue().getIdhEducacao();
+            double value = converter(areamidhE);
+            if (value != 0.0) {
+                String formattedValue = criarNumberFormat().format(value);
+                return new SimpleStringProperty(formattedValue);
+            } else {
+                return null;
+            }
+        });
         municipioClassificacaoIDHETableColumn.setCellValueFactory(new PropertyValueFactory<>("classificacaoIDHE"));
-        municipioIDHLongevidadeTableColumn.setCellValueFactory(new PropertyValueFactory<>("idhLongevidade"));
+        municipioIDHLongevidadeTableColumn.setCellValueFactory(cellData -> {
+            String areaIDHL = cellData.getValue().getIdhLongevidade();
+            double value = converter(areaIDHL);
+            if (value != 0.0) {
+                String formattedValue = criarNumberFormat().format(value);
+                return new SimpleStringProperty(formattedValue);
+            } else {
+                return null;
+            }
+        });
         municipioClassificacaoIDHLTableColumn.setCellValueFactory(new PropertyValueFactory<>("classificacaoIDHL"));
+
     }
 
     private void loadData() {
@@ -306,12 +422,12 @@ public class MainController implements Initializable {
                     .orElse(null);
 
             if (highestPibPerCapitaMunicipio != null) {
-                labelPibPerCapita.setText(String.format("%.2f", highestPibPerCapitaMunicipio.getPibPerCapita()));
+                labelPibPerCapita.setText(formatarNumeroBR(highestPibPerCapitaMunicipio.getPibPerCapita()));
                 labelMunicipio.setText(String.format("%s", highestPibPerCapitaMunicipio.getNome()));
             }
         }
     }
-    
+
     private void updateLowestPibPerCapita() {
         if (!municipioObservableList.isEmpty()) {
             Municipio lowestPibPerCapitaMunicipio = municipioObservableList.stream()
@@ -319,7 +435,7 @@ public class MainController implements Initializable {
                     .orElse(null);
 
             if (lowestPibPerCapitaMunicipio != null) {
-                labelPiorPibPerCapita.setText(String.format("%.2f", lowestPibPerCapitaMunicipio.getPibPerCapita()));
+                labelPiorPibPerCapita.setText(formatarNumeroBR(lowestPibPerCapitaMunicipio.getPibPerCapita()));
                 labelMunicipioPior.setText(String.format("%s", lowestPibPerCapitaMunicipio.getNome()));
             }
         }
@@ -329,7 +445,7 @@ public class MainController implements Initializable {
     private void handleUpdatePibPerCapita(ActionEvent event) {
         updateHighestPibPerCapita();
     }
-    
+
     @FXML
     private void updateLoestPibPerCapita(ActionEvent event) {
         updateLowestPibPerCapita();
@@ -337,8 +453,9 @@ public class MainController implements Initializable {
 
     @FXML
     private Label labelMunicipio;
-    
+
     @FXML
     private Label labelMunicipioPior;
+
     
 }
