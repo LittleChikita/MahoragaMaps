@@ -199,11 +199,26 @@ public class AtualizacaoController implements Initializable {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Aviso");
             alert.setHeaderText("Caracteres especiais não permitidos");
-            alert.setContentText("Por favor, remova todos os caracteres especiais dos campos.");
+            alert.setContentText("Por favor, remova todos os caracteres especiais ou letras dos campos.");
             alert.showAndWait();
             return;
         }
-      
+        if (!isValidNumberFormat()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Aviso");
+            alert.setHeaderText("Formato de número inválido");
+            alert.setContentText("Por favor, utilize o formato correto para números: 100.000,00 e com um valor Max: 100 bilhões");
+            alert.showAndWait();
+            return;
+        }
+        if (!isValidIDHFormat(txtIdh.getText()) || !isValidIDHFormat(txtIdhEducacao.getText()) || !isValidIDHFormat(txtIdhLongevidade.getText())) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Aviso");
+            alert.setHeaderText("Formato de IDH inválido");
+            alert.setContentText("Por favor, insira um valor válido para o IDH (máximo de 1,20 e até 5 casas decimais).");
+            alert.showAndWait();
+            return;
+        }
 
         String oldPopulacao = municipioSelecionado.getPopulacao();
         String oldDomicilios = municipioSelecionado.getDomicilios();
@@ -237,9 +252,10 @@ public class AtualizacaoController implements Initializable {
         writeChangelogEntry("IdhLongevidade", oldIdhLongevidade, txtIdhLongevidade.getText());
 
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Sucesso");
-        alert.setHeaderText(null);
-        alert.setContentText("Os valores do município foram atualizados com sucesso!");
+        alert.setTitle("Informação");
+        alert.initStyle(StageStyle.UNDECORATED);
+        alert.setHeaderText("Alterações salvas");
+        alert.setContentText("As alterações foram salvas com sucesso.");
         alert.showAndWait();
     }
 
@@ -285,7 +301,39 @@ public class AtualizacaoController implements Initializable {
                 || !txtIdhEducacao.getText().matches(regex)
                 || !txtIdhLongevidade.getText().matches(regex);
     }
-    
+
+    private boolean isValidNumberFormat() {
+        String regex = "^\\d{1,3}(\\.\\d{3})*(,\\d{1,5})?$";
+        double maxValue = 100_000_000_000.00000;
+
+        return validateField(txtPopulacao, regex, maxValue)
+                && validateField(txtDomicilios, regex, maxValue)
+                && validateField(txtPibTotal, regex, maxValue)
+                && validateField(txtRendaMedia, regex, maxValue)
+                && validateField(txtRendaNominal, regex, maxValue)
+                && validateField(txtPeaDia, regex, maxValue);
+    }
+
+    private boolean isValidIDHFormat(String value) {
+        try {
+            double idh = Double.parseDouble(value.replace(",", "."));
+            return idh <= 1.20 && value.matches("^\\d{1,2}([.,]\\d{1,5})?$");
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean validateField(TextField textField, String regex, double maxValue) {
+        if (textField.getText().matches(regex)) {
+            try {
+                double value = Double.parseDouble(textField.getText().replace(".", "").replace(",", "."));
+                return value <= maxValue;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return false;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
